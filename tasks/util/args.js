@@ -2,32 +2,34 @@ import yargs from 'yargs';
 
 const args = yargs
 
-    .option('prodiction',{
-        boolean : true,
-        default : false,
-        describe : 'min all scripts'
-    })
+  .option('production',{
+    boolean:true,
+    default:false,
+    describe:'min all scripts'
+  })
 
-    .option('watch',{
-        boolean : true,
-        default : false,
-        describe : 'watch all files'
-    })
+  .option('watch',{
+    boolean:true,
+    default:false,
+    describe:'watch all files'
+  })
 
-    .option('verbose',{
-        boolean : true,
-        default : false,
-        describe : 'log'
-    })
+  .option('verbose',{
+    boolean:true,
+    default:false,
+    describe:'log'
+  })
 
-    .option('sourcemaps',{
-        describe : 'force the creation of srocemaps'
-    })
+  .option('sourcemaps',{
+    describe:'force the creation of sroucemaps'
+  })
 
-    .option('prot',{
-        string:true,
-        default : 8080,
-        describe : 'server port'
-    })
+  .option('port',{
+    string:true,
+    default:8080,
+    describe:'server port'
+  })
 
-    .argv;
+  .argv
+
+export default args;
