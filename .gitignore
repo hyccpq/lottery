@@ -1,2 +1,9 @@
 .DS_Store
 node_modules/
+.idea/workspace.xml
+app.js
+app/css/
+bin/
+public/
+routes/
+views/
