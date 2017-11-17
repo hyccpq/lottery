@@ -166,7 +166,13 @@ class Base{
 
     }
 
-
+    /**
+     * 添加单次号码
+     * @param code
+     * @param type
+     * @param typeName
+     * @param count
+     */
     addCodeItem(code,type,typeName,count){
         let self = this;
         let tpl = `
@@ -181,4 +187,89 @@ class Base{
         $(self.cart_el).append(tpl);
         self.getTotal();
     }
+
+    /**
+     * 预计亏损或者盈利范围显示至页面
+     */
+    getCount(){
+        let self = this;
+        let active = $('.boll-list .btn-boll-active').length;
+        let count = self.computeCount(active,self.cur_play);
+        let range = self.computeBonus(active,self.cur_play);
+        let money = count*2;
+        let win1 = range[0]-money;
+        let win2 = range[1]-money;
+        let tpl;
+        let c1 = (win1<0&&win2<0)?Math.abs(win1):win1;
+        let c2 = (win1<0&&win2<0)?Math.abs(win2):win2;
+        if(count === 0){
+            tpl = `您选了<b class="red">${count}</b>注，共<b class="red">${money}</b>元`;
+        } else if(range[0] === range[1]){
+            tpl = `
+                您选了<b>${count}</b>注，共<b>${money}</b>元，<em>若中奖，奖金：
+                <strong class="red">${range[0]}</strong>元，
+                您将${win1>0?'盈利':'亏损'}
+                <strong class="${win1>=0?'red':'green'}">${Math.abs(win1)}</strong> 元</em>
+                `;
+        } else {
+            tpl = `
+                您选了<b></b>注，共<b></b>元，<em>若中奖，奖金：
+                <strong class="red"></strong>至<strong class="red"></strong>元，
+                您将${(win1<0&&win2<0)?'亏损':'盈利'}
+                <strong class="${win1>=0?'red':'green'}">${c1}</strong>至
+                <strong class="${win1>=0?'red':'green'}">${c1}</strong>元</em>
+            `;
+        }
+        $('.sel_info').html(tpl);
+
+    }
+
+    /**
+     * 计算所有金额
+     */
+    getTotal(){
+        let count = 0;
+        $('.codelist li').each(function (index,item) {
+            count += $(item).attr(count)*1;
+        });
+        $('#count').text(count);
+        $('#money').text(count*2);
+    }
+
+    /**
+     * 机选
+     * @param num
+     * @return {string}
+     */
+    getRandom(num){
+        let arr = [],index;
+        let number = Array.from(this.number);
+        while(num--){
+            index = Number.parseInt(Math.random()*number.length);
+            arr.push(number[index]);
+            number.splice(index,1);
+        }
+        return arr.join(' ');
+    }
+
+    /**
+     * 添加随机号码
+     * @param e
+     */
+    getRandomCode(e){
+        e.preventDefault();
+        let num = e.currentTarget.getAttribute('count');
+        let play = this.cur_play.match(/\d+/g)[0];
+        let self = this;
+        if(num === '0'){
+            $(self.cart_el).html('');
+        } else {
+            for(let i=0;i<num;i++){
+                self.addCodeItem(self.getRandom(play),self.cur_play,self.play_list.get(self.cur_play).name,1);
+            }
+        }
+    }
+
 }
+
+export default Base;
