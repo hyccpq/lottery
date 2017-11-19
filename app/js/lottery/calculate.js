@@ -10,12 +10,12 @@ class Calculate{
         const exist = this.play_list.has(play_name);
         const arr = new Array(active).fill('0');
         if(exist && play_name.at(0)==='r'){
-            count = Calculate.combine(arr,play_name.split("")[1]);
+            count = Calculate.combine(arr,play_name.split("")[1]).length;
         }
         return count;
     }
 
-    conputeBonus(active,play_name){
+    computeBonus(active,play_name){
         const play = play_name.split('');
         const self = this;
         let arr = new Array(play[1]*1).fill(0);

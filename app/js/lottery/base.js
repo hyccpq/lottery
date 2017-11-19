@@ -5,37 +5,37 @@ class Base{
      * 初始化奖金及其玩法说明
      */
     initPlayList(){
-        this.play_list.set(r2,{
+        this.play_list.set('r2',{
             bonus:6,
             tip:'从01～11中任选5个或多个号码，所选号码与开奖号码相同，即中奖<em class="red">6</em>元',
             name:'任二'
         })
-            .set(r3,{
+            .set('r3',{
                 bonus:19,
                 tip:'从01～11中任选5个或多个号码，所选号码与开奖号码相同，即中奖<em class="red">19</em>元',
                 name:'任三'
             })
-            .set(r4,{
+            .set('r4',{
                 bonus:78,
                 tip:'从01～11中任选5个或多个号码，所选号码与开奖号码相同，即中奖<em class="red">78</em>元',
                 name:'任四'
             })
-            .set(r5,{
+            .set('r5',{
                 bonus:540,
                 tip:'从01～11中任选5个或多个号码，所选号码与开奖号码相同，即中奖<em class="red">540</em>元',
                 name:'任五'
             })
-            .set(r6,{
+            .set('r6',{
                 bonus:90,
                 tip:'从01～11中任选5个或多个号码，所选号码与开奖号码相同，即中奖<em class="red">90</em>元',
                 name:'任六'
             })
-            .set(r7,{
+            .set('r7',{
                 bonus:26,
                 tip:'从01～11中任选5个或多个号码，所选号码与开奖号码相同，即中奖<em class="red">26</em>元',
                 name:'任七'
             })
-            .set(r8,{
+            .set('r8',{
                 bonus:9,
                 tip:'从01～11中任选5个或多个号码，所选号码与开奖号码相同，即中奖<em class="red">19</em>元',
                 name:'任八'
@@ -159,9 +159,9 @@ class Base{
         let self = this;
         let $active = $('.boll-list .btn-boll-active').text().match(/\d{2}/g);
         let active = $active?$active.length:0;
-        let count = self.comouteCount(active,self.cur_play);
+        let count = self.computeCount(active,self.cur_play);
         if(count){
-            self.addCodeItem($active.join(''),self.cur_play,self.play_list.get(self.cur_play).name,count);
+            self.addCodeItem($active.join(' '),self.cur_play,self.play_list.get(self.cur_play).name,count);
         }
 
     }
@@ -185,6 +185,7 @@ class Base{
             </li>
             `;
         $(self.cart_el).append(tpl);
+        // console.log(tpl);
         self.getTotal();
     }
 
@@ -213,8 +214,8 @@ class Base{
                 `;
         } else {
             tpl = `
-                您选了<b></b>注，共<b></b>元，<em>若中奖，奖金：
-                <strong class="red"></strong>至<strong class="red"></strong>元，
+                您选了<b>${count}</b>注，共<b>${money}</b>元，<em>若中奖，奖金：
+                <strong class="red">${win1}</strong>至<strong class="red">${win2}</strong>元，
                 您将${(win1<0&&win2<0)?'亏损':'盈利'}
                 <strong class="${win1>=0?'red':'green'}">${c1}</strong>至
                 <strong class="${win1>=0?'red':'green'}">${c1}</strong>元</em>
@@ -230,7 +231,7 @@ class Base{
     getTotal(){
         let count = 0;
         $('.codelist li').each(function (index,item) {
-            count += $(item).attr(count)*1;
+            count += $(item).attr('count')*1;
         });
         $('#count').text(count);
         $('#money').text(count*2);

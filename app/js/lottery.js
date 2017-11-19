@@ -7,9 +7,9 @@ import $ from 'jquery';
 
 const copyProperties = function (target,source) {
     for(let key of Reflect.ownKeys(source)){
-        if(key!==constructor&&key!==prototype&&key!=='name'){
+        if(key!=='constructor'&&key!=='prototype'&&key!=='name'){
             let desc = Object.getOwnPropertyDescriptor(source,key);
-            Object.defineProperties(target,key,desc);
+            Object.defineProperty(target,key,desc);
         }
     }
 };
@@ -39,7 +39,7 @@ class Lottery extends mix(Base,Timer,Calculate,Interface){
         this.issue_el = '#curr_issue';
         this.countdown_el = '#countdown';
         this.state_el = '.state_el';
-        this.cart_el = '.code_list';
+        this.cart_el = '.content';
         this.omit_el = '';
         this.cur_play = 'r5';
         this.initPlayList();
@@ -55,7 +55,7 @@ class Lottery extends mix(Base,Timer,Calculate,Interface){
              self.end_time = res.end_time;
              self.state = res.state;
              $(self.issue_el).text(res.issue);
-             self.countdown(res.end_time,function (res) {
+             self.countdown(res.end_time,function (time) {
                  $(self.countdown_el).html(time)
              },function () {
                  setTimeout(function(){
@@ -73,11 +73,12 @@ class Lottery extends mix(Base,Timer,Calculate,Interface){
     }
 
     initEvent(){
-        $('#play_list').on('click','li',self.changePlayNav.bind(self));
+        let self = this;
+        $('#plays').on('click','li',self.changePlayNav.bind(self));
         $('.boll-list').on('click','.btn-boll',self.toggleCodeActive.bind(self));
         $('#confirm_sel_code').on('click',self.addCode.bind(self));
         $('.dxjo').on('click','li',self.assistHandle.bind(self));
-        $('qkmethod').on('click','btn-middle',self.getRandomCode.bind(self));
+        $('.qkmethod').on('click','.btn-middle',self.getRandomCode.bind(self));
     }
 }
 
